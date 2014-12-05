@@ -164,13 +164,14 @@ package
 			if (Message.isMailSupported)
 			{
 				message( " === SENDING EMAIL === " );
+				
 				//
 				// Create attachments
 				
 //				var textfileNativePath:String  = createAttachmentTextFile( "text.txt" );
 //				var imagefileNativePath:String = createAttachmentImageFile( "image.jpg" );
 
-				var email:String = "ma@distriqt.com";
+				var email:String = "email@example.com";
 				
 				var subject:String = "test html";
 				var body:String = "<table>" +
