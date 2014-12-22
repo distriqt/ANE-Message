@@ -46,21 +46,21 @@ package
 	 */
 	public class TestMessage extends Sprite
 	{
-		public static const DEV_KEY : String = "YOUR_DEVELOPER_KEY";	
+		public static const APP_KEY : String = "APPLICATION_KEY";	
 		
 		/**
 		 * Class constructor 
 		 */	
-		public function TestMessage( devKey:String = DEV_KEY )
+		public function TestMessage( appKey:String = APP_KEY )
 		{
 			super();
-			_devKey = devKey;
+			_appKey = appKey;
 			create();
 			
 			
 			try
 			{
-				Message.init( _devKey );
+				Message.init( _appKey );
 				
 				message( "Message Supported:      " + Message.isSupported );
 				message( "Message Version:        " + Message.service.version );
@@ -83,7 +83,7 @@ package
 		//
 		//	VARIABLES
 		//
-		private var _devKey		: String;
+		private var _appKey		: String;
 		private var _text		: TextField;
 		
 		
