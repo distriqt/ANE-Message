@@ -2,6 +2,12 @@
 
 ###### 2014.12.22
 
+iOS: Included arm64 support (resolves #5) 
+Android: Corrected application id check when doesn't contain air prefix
+
+
+###### 2014.12.22
+
 iOS: Included arm64 support (resolves #2) 
 Android: Corrected application id check when doesn't contain air prefix (resolves #1)
 
