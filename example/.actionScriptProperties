@@ -60,14 +60,14 @@
         <newPackagingParams/>
         <modifiedPackagingParams/>
       </airSettings>
-      <multiPlatformSettings enabled="true" hideAneLibSymbols="0" includePlatformLibs="false" nativeSDKPathString="/Users/marchbold/work/sdks/ios/iPhoneOS7.0.sdk" platformID="com.adobe.flexide.multiplatform.ios.platform" reducedSizePackaging="false" version="2"/>
+      <multiPlatformSettings enabled="true" hideAneLibSymbols="1" includePlatformLibs="false" nativeSDKPathString="/Users/marchbold/work/sdks/ios/iPhoneOS8.1.sdk" platformID="com.adobe.flexide.multiplatform.ios.platform" reducedSizePackaging="false" version="2"/>
       <actionScriptSettings version="1"/>
     </buildTarget>
-    <buildTarget airDownloadURL="" androidSettingsVersion="2" buildTargetName="device" isCurrent="false" platformId="com.adobe.flexide.multiplatform.android.platform">
+    <buildTarget airDownloadURL="" androidSettingsVersion="2" buildTargetName="device" isCurrent="true" platformId="com.adobe.flexide.multiplatform.android.platform">
       <airSettings airCertificatePath="" airTimestamp="true" anePathSet="true" version="1">
         <airExcludes/>
         <anePaths>
-          <anePathEntry path="/Users/marchbold/work/distriqt/extensions/extensions/message/trunk/bin/com.distriqt.Message.ane"/>
+          <anePathEntry path="${DOCUMENTS}/extensions/message/trunk/bin/com.distriqt.Message.ane"/>
         </anePaths>
         <newLaunchParams/>
         <modifiedLaunchParams/>

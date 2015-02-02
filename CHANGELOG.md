@@ -1,5 +1,10 @@
 
 
+###### 2015.02.02
+
+Added check for .debug suffix in application id
+
+
 ###### 2014.12.22
 
 iOS: Included arm64 support (resolves #5) 
