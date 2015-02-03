@@ -118,7 +118,18 @@ package
 		}
 		
 		
-		private function createAttachmentTextFile( filename:String ):String
+		private function createAttachmentInfoFile( filename:String ):File
+		{
+			var file:File = File.createTempDirectory().resolvePath( filename );
+			var stream:FileStream = new FileStream();
+			stream.open(file, FileMode.WRITE);
+			stream.writeUTFBytes("some-custom-data");
+			stream.close();
+			return file;
+		}
+		
+		
+		private function createAttachmentTextFile( filename:String ):File
 		{
 			var file:File = File.documentsDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
@@ -126,11 +137,11 @@ package
 			stream.writeUTFBytes("This is the attachment");
 			stream.close();
 			
-			return file.nativePath;
+			return file;
 		}
 		
 		
-		private function createAttachmentImageFile( filename:String ):String
+		private function createAttachmentImageFile( filename:String ):File
 		{
 			var bd:BitmapData = new BitmapData( 100, 100, false, 0x222222 ); 
 			
@@ -143,7 +154,7 @@ package
 			stream.writeBytes(ba);
 			stream.close();
 			
-			return file.nativePath;
+			return file;
 		}
 		
 		
@@ -168,10 +179,11 @@ package
 				//
 				// Create attachments
 				
-//				var textfileNativePath:String  = createAttachmentTextFile( "text.txt" );
-//				var imagefileNativePath:String = createAttachmentImageFile( "image.jpg" );
+				var textfileNativePath:String  = createAttachmentTextFile( "text.txt" ).nativePath;
+				var imagefileNativePath:String = createAttachmentImageFile( "image.jpg" ).nativePath;
+				
 
-				var email:String = "email@example.com";
+				var email:String = "email@address.com";
 				
 				var subject:String = "test html";
 				var body:String = "<table>" +
@@ -183,6 +195,9 @@ package
 				
 //				var body:String = "<table style='font-family:Arial;padding:40px;'><tr><td colspan='2' style='font-weight:bold;font-size:150%;padding-bottom:15px;'>Dr. James McNess</td</tr><tr><td colspan='2' style='font-weight:bold;font-size:120%;padding-bottom:15px;'>Surgical Audit</td></tr><tr><td colspan='2' style='padding-bottom:30px;'> <span style='font-weight:bold;'>Audit Interval:</span> From <span style='font-style:italic; color:#ff0000'> 24/06/14 </span> to <span style='font-style:italic; color:#ff0000; '>02/07/14</span > </td></tr > <tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 1.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Gynaecological surgery for benign disease ? unplanned intra- or post-operative blood transfusion</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients receiving an unplanned intra-operative or post-operative blood transfusion during their hospital admission for any type of gynaecological surgery for benign disease. <span style='font-style:italic;'>(16)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients undergoing gynaecological surgery for benign disease  <span style='font-style:italic;'>(19)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>16/19 = <span style='font-weight:bold;'>84.21% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 2.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Gynaecological surgery - injury to a major viscus with repair</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients suffering injury to a major viscus with repair, during a gynaecological operative procedure or subsequently up to 2 weeks post-operatively. <span style='font-style:italic;'>(2)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients undergoing gynaecological surgery for benign disease.  <span style='font-style:italic;'>(19)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>2/19 = <span style='font-weight:bold;'>10.53% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 3.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Ectopic pregnancy managed laparoscopically</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients having laparoscopic management of an ectopic pregnancy. <span style='font-style:italic;'>(8)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients presenting with an ectopic pregnancy who are managed surgically.  <span style='font-style:italic;'>(14)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>8/14 = <span style='font-weight:bold;'>57.14% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 4.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Thromboprophylaxis for major gynaecological surgery</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients undergoing major gynaecological surgery who receive thromboprophylaxis according to hospital guidelines. <span style='font-style:italic;'>(1)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients undergoing major gynaecological surgery.  <span style='font-style:italic;'>(19)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>1/19 = <span style='font-weight:bold;'>5.26% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 4.2 </td><td style='padding-top:30px;padding-bottom:20px;'>Re-admission for venous thromboembolism within 28 days</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients who develop or are re-admitted with venous thromboembolism (VTE) within 28 days of major gynaecological surgery. <span style='font-style:italic;'>(6)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients undergoing major gynaecological surgery.  <span style='font-style:italic;'>(19)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>6/19 = <span style='font-weight:bold;'>31.58% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 5.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Use of mesh repair for pelvic organ prolapse</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients having mesh repair. <span style='font-style:italic;'>(4)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients having a repair for pelvic organ prolapse.  <span style='font-style:italic;'>(17)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>4/17 = <span style='font-weight:bold;'>23.53% </span></td></tr><tr style='font-weight:bold' valign='top'><td style='width:75px;padding-top:35px;padding-bottom:20px;' > CI 6.1 </td><td style='padding-top:30px;padding-bottom:20px;'>Surgical intervention for menorrhagia</td > </tr><tr><td></td><td style='border-bottom:1px solid #000000;padding-bottom:5px;color:#222222;'>Number of patients undergoing a hysterectomy for menorrhagia. <span style='font-style:italic;'>(6)</span></td></tr><tr><td></td><td style='padding-top:5px;color:#222222;'>Number of patients undergoing gynaecological surgery to treat menorrhagia.  <span style='font-style:italic;'>(18)</span></td></tr><tr style='padding-bottom:60px;'><td style='color:#ff0000;text-align:right;padding-top:15px;' colspan='2'>6/18 = <span style='font-weight:bold;'>33.33% </span></td></tr></table>";
 				
+//				var attachmentFile:File = createAttachmentInfoFile( "attachment.info" );
+//				var messageAttachment : MessageAttachment = new MessageAttachment( attachmentFile.nativePath, "application/octet-stream", attachmentFile.name );
+//				Message.service.sendMailWithOptions( subject, body, email, "", "", [messageAttachment]);
 				
 				Message.service.sendMailWithOptions( 
 					subject, 
@@ -190,11 +205,11 @@ package
 					email, 
 					"",
 					"",
-					null
-//					[
-//						new MessageAttachment( textfileNativePath,  "text/plain" ),
-//						new MessageAttachment( imagefileNativePath, "image/jpeg" )
-//					]
+//					null
+					[
+						new MessageAttachment( textfileNativePath,  "text/plain" ),
+						new MessageAttachment( imagefileNativePath, "image/jpeg" )
+					]
 					,
 					true
 				);

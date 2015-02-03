@@ -1,5 +1,10 @@
 
 
+###### 2015.02.03
+
+Android: Copied attachments to a temporary cache so external applications can access the files (resolves #3)
+
+
 ###### 2015.02.02
 
 Added check for .debug suffix in application id
