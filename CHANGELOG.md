@@ -1,5 +1,10 @@
 
 
+###### 2015.02.12
+
+Moved to new structure to support FlashBuilder 4.6 (#6)
+
+
 ###### 2015.02.03
 
 Android: Copied attachments to a temporary cache so external applications can access the files (resolves #3)
