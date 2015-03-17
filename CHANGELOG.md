@@ -1,5 +1,11 @@
 
 
+###### 2015.03.17
+
+Added share activity to allow sharing of text/url/image (resolves #10)
+Android: Fixed issue with sendMail when intent failed to be created
+
+
 ###### 2015.02.12
 
 Moved to new structure to support FlashBuilder 4.6 (#6)
