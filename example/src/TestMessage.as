@@ -17,14 +17,11 @@ package
 {
 	import com.adobe.images.JPGEncoder;
 	import com.distriqt.extension.message.Message;
-	import com.distriqt.extension.message.MessageAttachment;
-	import com.distriqt.extension.message.ShareOptions;
 	import com.distriqt.extension.message.events.MessageEvent;
 	import com.distriqt.extension.message.events.MessageSMSEvent;
 	import com.distriqt.extension.message.events.ShareEvent;
 	import com.distriqt.extension.message.objects.SMS;
 	
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
@@ -34,7 +31,6 @@ package
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
-	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.utils.ByteArray;
@@ -72,11 +68,16 @@ package
 				message( "Message Supported:      " + Message.isSupported );
 				message( "Message Version:        " + Message.service.version );
 				message( "Message Mail Supported: " + Message.isMailSupported );
+				message( "Message SMS Supported:  " + Message.isSMSSupported );
 				
 				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler, 	false, 0, true );
 				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler, false, 0, true );
 				
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsSentHandler, false, 0, true );
+				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 		message_smsEventHandler, false, 0, true );
+				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 		message_smsEventHandler, false, 0, true );
+				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler, false, 0, true );
+				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler, false, 0, true );
+				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 		message_smsEventHandler, false, 0, true );
 				
 				Message.service.addEventListener( ShareEvent.COMPLETE,	message_shareHandler, false, 0, true );
 				Message.service.addEventListener( ShareEvent.CANCELLED,	message_shareHandler, false, 0, true );
@@ -106,10 +107,9 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 
-			var tf:TextFormat = new TextFormat();
-			tf.size = 24;
 			_text = new TextField();
-			_text.defaultTextFormat = tf;
+			_text.y = 40;
+			_text.defaultTextFormat = new TextFormat( "_typewriter", 16 );
 			addChild( _text );
 
 			stage.addEventListener( Event.RESIZE, stage_resizeHandler, false, 0, true );
@@ -182,13 +182,13 @@ package
 		private function mouseClickHandler( event:MouseEvent ):void
 		{
 			
-			if (Message.service.isShareSupported)
-			{
-				var options:ShareOptions = new ShareOptions();
-				options.position = new Rectangle( 100, 100, 100, 0 );
-				var image:Bitmap = new Image() as Bitmap;
-				Message.service.share( "some text", image.bitmapData, "http://airnativeextensions.com", options );
-			}
+//			if (Message.service.isShareSupported)
+//			{
+//				var options:ShareOptions = new ShareOptions();
+//				options.position = new Rectangle( 100, 100, 100, 0 );
+//				var image:Bitmap = new Image() as Bitmap;
+//				Message.service.share( "some text", image.bitmapData, "http://airnativeextensions.com", options );
+//			}
 			
 			
 //			if (Message.isMailSupported)
@@ -234,16 +234,18 @@ package
 //				);
 //			}
 			
-//			if (Message.isSMSSupported)
-//			{
-//				message( " === SENDING SMS === " );
-//				
-//				var sms:SMS = new SMS();
-//				sms.address = "0417711791";
-//				sms.message = "Testing Message ANE";
-//				
+			if (Message.isSMSSupported)
+			{
+				message( " === SENDING SMS === " );
+				
+				var sms:SMS = new SMS();
+				sms.id = "1";
+				sms.address = "0417711791";
+				sms.message = "Testing Message ANE";
+				
+				Message.service.sendSMSWithUI( sms );
 //				Message.service.sendSMS( sms );
-//			}
+			}
 			
 			
 			
@@ -266,9 +268,10 @@ package
 			message( event.type +"::"+ event.details );
 		}
 		
-		private function message_smsSentHandler( event:MessageSMSEvent ):void
+		
+		private function message_smsEventHandler( event:MessageSMSEvent ):void
 		{
-			message( event.type +"::"+ event.details );
+			message( event.type +"::"+ event.details + "::"+event.sms.toString() );
 		}
 		
 		

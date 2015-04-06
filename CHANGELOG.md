@@ -1,5 +1,13 @@
 
 
+###### 2015.04.07
+
+Added an 'id' to the SMS object that gets returned with send events (resolves #13)
+Android: Added the ability to send SMS messages longer than 160 characters (resolves #14)
+Corrected the returned SMS object on send events (resolves #12)
+Android: Removed unused resources (resolves #11)
+
+
 ###### 2015.03.17
 
 Added share activity to allow sharing of text/url/image (resolves #10)
