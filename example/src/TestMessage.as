@@ -239,8 +239,8 @@ package
 				message( " === SENDING SMS === " );
 				
 				var sms:SMS = new SMS();
-				sms.id = "1";
-				sms.address = "0417711791";
+//				sms.id = "1";
+				sms.address = "12345";
 				sms.message = "Testing Message ANE";
 				
 				Message.service.sendSMSWithUI( sms );
