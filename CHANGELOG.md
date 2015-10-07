@@ -1,5 +1,10 @@
 
 
+###### 2015.10.07
+
+Corrected MessageEvent typo (resolves #17)
+
+
 ###### 2015.06.22
 
 Android: Fix for sending SMS with Hangouts in API > 19 (resolves #16)
