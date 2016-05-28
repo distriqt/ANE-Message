@@ -1,5 +1,12 @@
 
 
+###### 2016.05.29
+
+Android: Added basic HTML formatting and links (resolves #20)  
+Added starling example application
+Android: Corrected text on Textra app (resolves #22)
+
+
 ###### 2015.10.07
 
 Corrected MessageEvent typo (resolves #17)
