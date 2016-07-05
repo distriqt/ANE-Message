@@ -1,5 +1,11 @@
 
 
+######  2016.07.05
+
+Documentation update
+iOS: Corrected small issue with sendSMSWithUI
+
+
 ###### 2016.05.29
 
 Android: Added basic HTML formatting and links (resolves #20)  

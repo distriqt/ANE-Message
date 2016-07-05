@@ -177,7 +177,7 @@ package com.distriqt.test.message
 				message( " === SENDING SMS WITH UI === " );
 				
 				var sms:SMS = new SMS();
-				sms.address = "12345";
+				sms.address = "0444444444";
 				sms.message = "Testing Message ANE";
 				
 				Message.service.sendSMSWithUI( sms, false );
