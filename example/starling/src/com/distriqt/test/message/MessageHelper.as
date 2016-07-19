@@ -138,7 +138,6 @@ package com.distriqt.test.message
 					"<div/>" ;
 					
 				
-				
 				Message.service.sendMailWithOptions( 
 					subject, 
 					body, 

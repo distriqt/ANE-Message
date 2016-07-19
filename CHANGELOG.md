@@ -1,5 +1,10 @@
 
 
+######  2016.07.19
+
+Confirming build settings (#23)
+
+
 ######  2016.07.05
 
 Documentation update
