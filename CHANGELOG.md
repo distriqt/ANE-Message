@@ -1,5 +1,10 @@
 
 
+######  2016.08.03
+
+Updated Core library compatibility
+
+
 ######  2016.07.19
 
 Confirming build settings (#23)
