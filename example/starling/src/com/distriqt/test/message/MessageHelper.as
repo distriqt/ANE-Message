@@ -63,6 +63,8 @@ package com.distriqt.test.message
 				{
 					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler, 	false, 0, true );
 					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler, false, 0, true );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_COMPLETE, 	message_composeHandler, false, 0, true );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_CANCELLED,	message_composeHandler, false, 0, true );
 					
 					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 		message_smsEventHandler, false, 0, true );
 					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 		message_smsEventHandler, false, 0, true );
@@ -142,7 +144,7 @@ package com.distriqt.test.message
 					subject, 
 					body, 
 					email, 
-					"",
+					"test@test.cc.com",
 					"",
 					[
 						new MessageAttachment( textfileNativePath,  "text/plain" ),

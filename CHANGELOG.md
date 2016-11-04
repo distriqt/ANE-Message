@@ -1,5 +1,10 @@
 
 
+###### 2016.11.04 [v5.1.006]
+
+Corrected sendMail function on Android v6+ (resolves #25)
+
+
 ######  2016.08.03
 
 Updated Core library compatibility
