@@ -1,5 +1,10 @@
 
 
+###### 2016.12.30 [v5.1.009]
+
+Updated examples + added checks for invalid attachments
+
+
 ###### 2016.12.30 [v5.1.008]
 
 Updated SDKs + new documentation

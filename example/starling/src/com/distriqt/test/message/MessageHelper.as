@@ -193,7 +193,7 @@ package com.distriqt.test.message
 		
 		private function createAttachmentInfoFile( filename:String ):File
 		{
-			var file:File = File.createTempDirectory().resolvePath( filename );
+			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
 			stream.open(file, FileMode.WRITE);
 			stream.writeUTFBytes("some-custom-data");
@@ -204,7 +204,7 @@ package com.distriqt.test.message
 		
 		private function createAttachmentTextFile( filename:String ):File
 		{
-			var file:File = File.documentsDirectory.resolvePath( filename );
+			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
 			stream.open(file, FileMode.WRITE);
 			stream.writeUTFBytes("This is the attachment");
@@ -221,7 +221,7 @@ package com.distriqt.test.message
 			var jpg:JPGEncoder = new JPGEncoder(50);
 			var ba:ByteArray = jpg.encode( bd );
 			
-			var file:File = File.documentsDirectory.resolvePath( filename );
+			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
 			stream.open(file, FileMode.WRITE);
 			stream.writeBytes(ba);
