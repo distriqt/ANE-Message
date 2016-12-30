@@ -1,9 +1,7 @@
-built by [distriqt //](https://airnativeextensions.com) 
 
 ![](images/hero.png)
 
-# Message 
-
+# Message
 
 The [Message](https://airnativeextensions.com/extension/com.distriqt.Message) 
 extension provides functionality to send an email with attachments and to send SMS.
@@ -32,14 +30,6 @@ We provide complete guides to get you up and running with messaging quickly and 
 As with all our extensions you get access to a year of support and updates as we are 
 continually improving and updating the extensions for OS updates and feature requests.
 
-
-## Documentation
-
-
-Latest documentation can be found in the [wiki](https://github.com/distriqt/ANE-Message/wiki)
-
-Quick Example:
-
 ```as3
 if (Message.isMailSupported)
 {
@@ -50,19 +40,4 @@ if (Message.isMailSupported)
 }
 ```
 
-More information here: 
-
-[com.distriqt.Message](https://airnativeextensions.com/extension/com.distriqt.Message)
-
-
-## License
-
-You can purchase a license for using this extension:
-
-[airnativeextensions.com](https://airnativeextensions.com/)
-
-distriqt retains all copyright.
-
-
 ![](images/promo.png)
-
