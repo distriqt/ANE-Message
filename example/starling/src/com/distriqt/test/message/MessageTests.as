@@ -14,8 +14,10 @@
 package com.distriqt.test.message
 {
 	import com.adobe.images.JPGEncoder;
+	import com.distriqt.extension.message.AuthorisationStatus;
 	import com.distriqt.extension.message.Message;
 	import com.distriqt.extension.message.MessageAttachment;
+	import com.distriqt.extension.message.events.AuthorisationEvent;
 	import com.distriqt.extension.message.events.MessageEvent;
 	import com.distriqt.extension.message.events.MessageSMSEvent;
 	import com.distriqt.extension.message.events.ShareEvent;
@@ -25,23 +27,25 @@ package com.distriqt.test.message
 	import flash.filesystem.File;
 	import flash.filesystem.FileMode;
 	import flash.filesystem.FileStream;
+	import flash.media.CameraUI;
 	import flash.utils.ByteArray;
-
+	
+	import starling.display.Sprite;
+	
 	/**	
 	 */
-	public class MessageHelper
+	public class MessageTests extends Sprite
 	{
 		
 		[Embed("/image.png")]
 		public var Image:Class;
 		
-		private var _messageCallback : Function;
-		private function message( text:String ):void
+		public static const TAG : String = "";
+		
+		private var _l : ILogger;
+		private function log( log:String ):void
 		{
-			if (_messageCallback != null) 
-			{
-				_messageCallback( text );
-			}
+			_l.log( TAG, log );
 		}
 		
 		
@@ -53,28 +57,31 @@ package com.distriqt.test.message
 		//	FUNCTIONALITY
 		//
 		
-		public function MessageHelper( message:Function )
+		public function MessageTests( logger:ILogger )
 		{
-			_messageCallback = message;
+			_l = logger;
 			try
 			{
 				Message.init( Config.distriqtApplicationKey );
+				log( "Message.isSupported = " + Message.isSupported );
 				if (Message.isSupported)
 				{
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler, 	false, 0, true );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler, false, 0, true );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_COMPLETE, 	message_composeHandler, false, 0, true );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_CANCELLED,	message_composeHandler, false, 0, true );
+					log( "Message.version =     " + Message.service.version );
 					
-					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 		message_smsEventHandler, false, 0, true );
-					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 		message_smsEventHandler, false, 0, true );
-					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler, false, 0, true );
-					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler, false, 0, true );
-					Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 		message_smsEventHandler, false, 0, true );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_COMPLETE, 	message_composeHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_CANCELLED,	message_composeHandler );
 					
-					Message.service.addEventListener( ShareEvent.COMPLETE,	message_shareHandler, false, 0, true );
-					Message.service.addEventListener( ShareEvent.CANCELLED,	message_shareHandler, false, 0, true );
-					Message.service.addEventListener( ShareEvent.FAILED, 	message_shareHandler, false, 0, true );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 	message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 	message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 	message_smsEventHandler );
+					
+					Message.service.addEventListener( ShareEvent.COMPLETE,	message_shareHandler );
+					Message.service.addEventListener( ShareEvent.CANCELLED,	message_shareHandler );
+					Message.service.addEventListener( ShareEvent.FAILED, 	message_shareHandler );
 					
 					
 					// Create some files for using as attachments
@@ -96,7 +103,7 @@ package com.distriqt.test.message
 		{
 			if (Message.isMailSupported)
 			{
-				message( " === SENDING EMAIL === " );
+				log( " === SENDING EMAIL === " );
 			
 				Message.service.sendMail( 
 					"Sending email from AIR", 
@@ -110,7 +117,7 @@ package com.distriqt.test.message
 		{
 			if (Message.isMailSupported)
 			{
-				message( " === SENDING EMAIL === " );
+				log( " === SENDING EMAIL === " );
 				
 				var email:String = "ma@distriqt.com";
 				var subject:String = "Sending email from AIR";
@@ -158,30 +165,30 @@ package com.distriqt.test.message
 		
 		public function sendSMS():void
 		{
-			if (Message.isSMSSupported)
+			if (Message.service.smsManager.isSMSSupported)
 			{
-				message( " === SENDING SMS === " );
+				log( " === SENDING SMS === " );
 				
 				var sms:SMS = new SMS();
-				sms.address = "12345";
+				sms.address = "0444444444";
 				sms.message = "Testing Message ANE";
 				
-				Message.service.sendSMS( sms );
+				Message.service.smsManager.sendSMS( sms );
 			}
 		}
 		
 		
 		public function sendSMSWithUI():void
 		{
-			if (Message.isSMSSupported)
+			if (Message.service.smsManager.isSMSSupported)
 			{
-				message( " === SENDING SMS WITH UI === " );
+				log( " === SENDING SMS WITH UI === " );
 				
 				var sms:SMS = new SMS();
 				sms.address = "0444444444";
 				sms.message = "Testing Message ANE";
 				
-				Message.service.sendSMSWithUI( sms, false );
+				Message.service.smsManager.sendSMSWithUI( sms, false );
 			}
 		}
 		
@@ -234,6 +241,56 @@ package com.distriqt.test.message
 		
 		
 		
+		////////////////////////////////////////////////////////
+		// 	AUTHORISATION
+		//
+		
+		public function authorisationStatus():void
+		{
+			if (Message.isSupported)
+			{
+				log( "authorisationStatus = " + Message.service.smsManager.authorisationStatus() );
+			}
+		}
+		
+		public function checkAuthorisation():void
+		{
+			if (Message.isSupported)
+			{
+				
+				switch (Message.service.smsManager.authorisationStatus())
+				{
+					case AuthorisationStatus.SHOULD_EXPLAIN:
+					case AuthorisationStatus.NOT_DETERMINED:
+						// REQUEST ACCESS: This will display the permission dialog
+						Message.service.smsManager.requestAuthorisation();
+						return;
+					
+					case AuthorisationStatus.DENIED:
+					case AuthorisationStatus.UNKNOWN:
+					case AuthorisationStatus.RESTRICTED:
+						// ACCESS DENIED: You should inform your user appropriately
+						return;
+					
+					case AuthorisationStatus.AUTHORISED:
+						// AUTHORISED: Camera will be available
+						break;
+				}
+				
+			}
+		}
+		
+		
+		private function authorisationChangedHandler( event:AuthorisationEvent ):void
+		{
+			log( "authorisationChanged: " + event.status );
+		}
+		
+		
+		
+		
+		
+		
 		//
 		//
 		//	EXTENSION HANDLERS
@@ -242,24 +299,24 @@ package com.distriqt.test.message
 		
 		private function message_errorHandler( event:MessageEvent ):void 
 		{
-			message( event.type +"::"+ event.details );
+			log( event.type +"::"+ event.details );
 		}
 		
 		private function message_composeHandler( event:MessageEvent ):void 
 		{
-			message( event.type +"::"+ event.details );
+			log( event.type +"::"+ event.details );
 		}
 		
 		
 		private function message_smsEventHandler( event:MessageSMSEvent ):void
 		{
-			message( event.type +"::"+ event.details + "::"+event.sms.toString() );
+			log( event.type +"::"+ event.details + "::"+event.sms.toString() );
 		}
 		
 		
 		private function message_shareHandler( event:ShareEvent ):void
 		{
-			message( event.type + "::" + event.activityType + "::" + event.error );
+			log( event.type + "::" + event.activityType + "::" + event.error );
 		}
 		
 		

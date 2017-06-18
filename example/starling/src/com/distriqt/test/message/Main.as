@@ -13,6 +13,8 @@
  */
 package com.distriqt.test.message
 {
+	import feathers.controls.ScrollContainer;
+	
 	import flash.system.Capabilities;
 	
 	import feathers.controls.Button;
@@ -22,11 +24,15 @@ package com.distriqt.test.message
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.text.TextField;
+	import starling.utils.Color;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
 	/**	
 	 * 
 	 */
-	public class Main extends Sprite
+	public class Main extends Sprite implements ILogger
 	{
 		////////////////////////////////////////////////////////
 		//	CONSTANTS
@@ -37,18 +43,13 @@ package com.distriqt.test.message
 		//	VARIABLES
 		//
 		
-		private var _helper							: MessageHelper;
+		private var _tests		: MessageTests;
 
 		
 		//	UI
 		
-		private var _group							: LayoutGroup;
-		
-		private var _button_sendMail				: Button;
-		private var _button_sendMailWithOptions		: Button;
-
-		private var _button_sendSMS					: Button;
-		private var _button_sendSMSWithUI			: Button;
+		private var _buttons	: Vector.<Button>;
+		private var _text		: TextField;
 		
 		
 		
@@ -67,7 +68,12 @@ package com.distriqt.test.message
 		}
 		
 		
-		
+		public function log( tag:String, message:String ):void
+		{
+			trace( tag+"::"+message );
+			if (_text)
+				_text.text = tag+"::"+message + "\n" + _text.text ;
+		}
 		
 		
 		////////////////////////////////////////////////////////
@@ -76,15 +82,8 @@ package com.distriqt.test.message
 		
 		private function init():void
 		{
-			_helper = new MessageHelper( message );
+		
 		}
-		
-		
-		private function message( text:String ):void
-		{
-			trace( text );
-		}
-		
 		
 		
 		////////////////////////////////////////////////////////
@@ -99,61 +98,55 @@ package com.distriqt.test.message
 			
 			Config.scale = 2 * Capabilities.screenDPI / theme.originalDPI;
 			
+			_text = new TextField( stage.stageWidth, stage.stageHeight, "", "_typewriter", 18, Color.WHITE );
+			_text.hAlign = HAlign.LEFT;
+			_text.vAlign = VAlign.TOP;
+			_text.y = 40;
+			_text.touchable = false;
+			
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.gap = 3 * Config.scale;
+			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_RIGHT;
+			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
+			layout.gap = 5;
+			var container:ScrollContainer = new ScrollContainer();
+			container.layout = layout;
+			container.width = stage.stageWidth;
+			container.height = stage.stageHeight-50;
 			
-			_group = new LayoutGroup();
-			_group.layout = layout;
-			_group.x = 10 * Config.scale;
-			_group.y = 5 + 40 * (Config.scale - 1);
-			addChild( _group );
+			_tests = new MessageTests( this );
+			addChild( _tests );
 			
-			_button_sendMail = new Button();
-			_button_sendMail.label = "Send Mail";
-			_button_sendMail.addEventListener( Event.TRIGGERED, button_sendMail_triggeredHandler );
-			
-			_button_sendMailWithOptions = new Button();
-			_button_sendMailWithOptions.label = "Send Mail With Options";
-			_button_sendMailWithOptions.addEventListener( Event.TRIGGERED, button_sendMailWithOptions_triggeredHandler );
+			_buttons = new Vector.<Button>();
 			
 			
-			_button_sendSMS = new Button();
-			_button_sendSMS.label = "Send SMS";
-			_button_sendSMS.addEventListener( Event.TRIGGERED, button_sendSMS_triggeredHandler );
+			addAction( "Send Mail", _tests.sendMail );
+			addAction( "Send Mail With Options", _tests.sendMailWithOptions );
 			
-			_button_sendSMSWithUI = new Button();
-			_button_sendSMSWithUI.label = "Send SMS With UI";
-			_button_sendSMSWithUI.addEventListener( Event.TRIGGERED, button_sendSMSWithUI_triggeredHandler );
+			addAction( "Status :SMS", _tests.authorisationStatus );
+			addAction( "Check :SMS", _tests.checkAuthorisation );
+			addAction( "Send SMS :SMS", _tests.sendSMS );
+			addAction( "Send SMS With UI :SMS", _tests.sendSMSWithUI );
 			
 			
-			_group.addChild( _button_sendMail );
-			_group.addChild( _button_sendMailWithOptions );
 			
-			_group.addChild( _button_sendSMS );
-			_group.addChild( _button_sendSMSWithUI );
-		
-			init();
-		}
-
-		
-		private function button_sendMail_triggeredHandler( event:Event ):void
-		{
-			_helper.sendMail();
-		}
-
-		private function button_sendMailWithOptions_triggeredHandler( event:Event ):void
-		{
-			_helper.sendMailWithOptions();
-		}
-
-		private function button_sendSMS_triggeredHandler( event:Event ):void
-		{
-			_helper.sendSMS();
+			
+			addChild( _text );
+			for each (var button:Button in _buttons)
+			{
+				container.addChild(button);
+			}
+			addChild( container );
+			
+			
 		}
 		
-		private function button_sendSMSWithUI_triggeredHandler( event:Event ):void 
+		
+		private function addAction( label:String, listener:Function ):void
 		{
-			_helper.sendSMSWithUI();
+			var b:Button = new Button();
+			b.label = label;
+			b.addEventListener( starling.events.Event.TRIGGERED, listener );
+			_buttons.push( b );
 		}
 		
 		

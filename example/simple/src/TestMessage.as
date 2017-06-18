@@ -239,12 +239,10 @@ package
 				message( " === SENDING SMS === " );
 				
 				var sms:SMS = new SMS();
-//				sms.id = "1";
-				sms.address = "12345";
+				sms.address = "0444444444";
 				sms.message = "Testing Message ANE";
 				
 				Message.service.sendSMSWithUI( sms );
-//				Message.service.sendSMS( sms );
 			}
 			
 			
