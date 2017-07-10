@@ -32,7 +32,6 @@ You should add the listing below to your manifest:
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	
-	<uses-permission android:name="android.permission.WRITE_SMS" />
 	<uses-permission android:name="android.permission.SEND_SMS" /> 
 	<uses-permission android:name="android.permission.READ_SMS" /> 
 	<uses-permission android:name="android.permission.RECEIVE_SMS" />
@@ -47,6 +46,9 @@ You should add the listing below to your manifest:
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter> 
 		</receiver>
+
+		<activity 	android:name="com.distriqt.extension.message.permissions.AuthorisationActivity"
+					android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 		
 	</application>
 </manifest>

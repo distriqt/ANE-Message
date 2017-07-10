@@ -1,5 +1,10 @@
 
 
+###### 2017.07.10 [v5.2.005]
+
+Updated for compatibility with new Core library (for Notifications/PushNotifications fix)
+
+
 ###### 2017.06.19 [v5.2.004]
 
 Added authorisation checks for send SMS on Android (#28)
