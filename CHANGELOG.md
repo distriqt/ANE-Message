@@ -1,5 +1,10 @@
 
 
+###### 2017.07.31 [v5.2.007]
+
+Added SMS NOT DELIVERED event
+
+
 ###### 2017.07.10 [v5.2.005]
 
 Updated for compatibility with new Core library (for Notifications/PushNotifications fix)
