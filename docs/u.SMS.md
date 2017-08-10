@@ -4,7 +4,7 @@
 The example below shows how to send an SMS using the native UI:
 
 ```as3
-if (Message.isSMSSupported)
+if (Message.service.smsManager.isSMSSupported)
 {
 	Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, smsEventHandler );
 	Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, smsEventHandler );

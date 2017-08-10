@@ -1,5 +1,10 @@
 
 
+###### 2017.08.11 [v5.2.008]
+
+Updated simple example
+
+
 ###### 2017.07.31 [v5.2.007]
 
 Added SMS NOT DELIVERED event

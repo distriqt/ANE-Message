@@ -46,7 +46,7 @@ package
 	 */
 	public class TestMessage extends Sprite
 	{
-		public static const APP_KEY : String = "APPLICATION_KEY";	
+		public static var APP_KEY : String = "APPLICATION_KEY";
 		
 		[Embed("image.png")]
 		public var Image:Class;
@@ -54,34 +54,32 @@ package
 		/**
 		 * Class constructor 
 		 */	
-		public function TestMessage( appKey:String = APP_KEY )
+		public function TestMessage()
 		{
 			super();
-			_appKey = appKey;
 			create();
-			
 			
 			try
 			{
-				Message.init( _appKey );
+				Message.init( APP_KEY );
 				
 				message( "Message Supported:      " + Message.isSupported );
 				message( "Message Version:        " + Message.service.version );
 				message( "Message Mail Supported: " + Message.isMailSupported );
-				message( "Message SMS Supported:  " + Message.isSMSSupported );
+				message( "Message SMS Supported:  " + Message.service.smsManager.isSMSSupported );
 				
-				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler, 	false, 0, true );
-				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler, false, 0, true );
+				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, message_errorHandler );
+				Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, message_composeHandler );
 				
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 		message_smsEventHandler, false, 0, true );
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 		message_smsEventHandler, false, 0, true );
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler, false, 0, true );
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler, false, 0, true );
-				Message.service.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 		message_smsEventHandler, false, 0, true );
+				Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, message_smsEventHandler );
+				Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, message_smsEventHandler );
+				Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, message_smsEventHandler );
+				Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, message_smsEventHandler );
+				Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, message_smsEventHandler );
 				
-				Message.service.addEventListener( ShareEvent.COMPLETE,	message_shareHandler, false, 0, true );
-				Message.service.addEventListener( ShareEvent.CANCELLED,	message_shareHandler, false, 0, true );
-				Message.service.addEventListener( ShareEvent.FAILED, 	message_shareHandler, false, 0, true );
+				Message.service.addEventListener( ShareEvent.COMPLETE, message_shareHandler );
+				Message.service.addEventListener( ShareEvent.CANCELLED, message_shareHandler );
+				Message.service.addEventListener( ShareEvent.FAILED, message_shareHandler );
 			}
 			catch (e:Error)
 			{
@@ -94,7 +92,6 @@ package
 		//
 		//	VARIABLES
 		//
-		private var _appKey		: String;
 		private var _text		: TextField;
 		
 		
@@ -242,7 +239,7 @@ package
 				sms.address = "0444444444";
 				sms.message = "Testing Message ANE";
 				
-				Message.service.sendSMSWithUI( sms );
+				Message.service.smsManager.sendSMSWithUI( sms );
 			}
 			
 			
