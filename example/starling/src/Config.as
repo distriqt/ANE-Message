@@ -17,8 +17,6 @@ package
 	public class Config
 	{
 		
-		public static var distriqtApplicationKey	: String = "";
-		
 		public static var scale : Number = 1;
 		
 	}

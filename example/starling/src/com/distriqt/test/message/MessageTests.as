@@ -62,7 +62,6 @@ package com.distriqt.test.message
 			_l = logger;
 			try
 			{
-				Message.init( Config.distriqtApplicationKey );
 				log( "Message.isSupported = " + Message.isSupported );
 				if (Message.isSupported)
 				{
@@ -105,10 +104,10 @@ package com.distriqt.test.message
 			{
 				log( " === SENDING EMAIL === " );
 			
-				Message.service.sendMail( 
-					"Sending email from AIR", 
-					"This email was sent using the distriqt Message AIR native extension",
-					"email@address.com" 
+				Message.service.sendMail(
+						"Sending email from AIR",
+						"This is the content of the email\n\nSent using the distriqt Message ANE",
+						"email@address.com"
 				);
 			}
 		}
@@ -153,10 +152,7 @@ package com.distriqt.test.message
 					email, 
 					"test@test.cc.com",
 					"",
-					[
-						new MessageAttachment( textfileNativePath,  "text/plain" ),
-						new MessageAttachment( imagefileNativePath, "image/jpeg" )
-					],
+					[ new MessageAttachment( imagefileNativePath, "image/jpeg" ) ],
 					true
 				);
 			}			

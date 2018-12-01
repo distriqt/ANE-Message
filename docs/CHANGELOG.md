@@ -1,5 +1,12 @@
 
 
+###### 2018.12.01 [v5.2.012]
+
+```
+Android: Added file provider functionality for sharing files through attachments (resolves #44)
+```
+
+
 ###### 2017.08.11 [v5.2.008]
 
 Updated simple example

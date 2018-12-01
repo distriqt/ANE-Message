@@ -46,8 +46,6 @@ package
 	 */
 	public class TestMessage extends Sprite
 	{
-		public static var APP_KEY : String = "APPLICATION_KEY";
-		
 		[Embed("image.png")]
 		public var Image:Class;
 		
@@ -61,8 +59,6 @@ package
 			
 			try
 			{
-				Message.init( APP_KEY );
-				
 				message( "Message Supported:      " + Message.isSupported );
 				message( "Message Version:        " + Message.service.version );
 				message( "Message Mail Supported: " + Message.isMailSupported );

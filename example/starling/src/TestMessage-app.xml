@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<application xmlns="http://ns.adobe.com/air/application/26.0">
+<application xmlns="http://ns.adobe.com/air/application/27.0">
     <id>com.distriqt.test</id>
     <filename>TestMessage</filename>
     <name>TestMessage</name>
@@ -53,9 +53,6 @@
 
 				<application>
 
-					<activity android:name="com.distriqt.extension.message.activities.SendMailActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-					<activity android:name="com.distriqt.extension.message.activities.ShareActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-
 					<receiver android:name="com.distriqt.extension.message.receivers.MessageSMSReceiver" android:exported="true" >
 						<intent-filter android:priority="1000">
 							<action android:name="android.provider.Telephony.SMS_RECEIVED" />
@@ -64,6 +61,17 @@
 
 					<activity 	android:name="com.distriqt.extension.message.permissions.AuthorisationActivity"
 								android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+
+                    <provider
+                        android:name="com.distriqt.extension.message.content.MessageFileProvider"
+                        android:authorities="air.com.distriqt.test.messagefileprovider"
+                        android:grantUriPermissions="true"
+                        android:exported="false">
+                        <meta-data
+                            android:name="android.support.FILE_PROVIDER_PATHS"
+                            android:resource="@xml/distriqt_message_paths" />
+                    </provider>
 
 
 				</application>
