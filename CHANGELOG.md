@@ -1,5 +1,13 @@
 
 
+###### 2019.02.27 [v5.3.017]
+
+```
+Updated minimum iOS version to 8.0 (resolves #49)
+Embedded iOS bitcode
+```
+
+
 ###### 2018.12.01 [v5.2.012]
 
 ```

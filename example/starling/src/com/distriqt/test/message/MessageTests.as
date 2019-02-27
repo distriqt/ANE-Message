@@ -32,7 +32,8 @@ package com.distriqt.test.message
 	
 	import starling.display.Sprite;
 	
-	/**	
+	
+	/**
 	 */
 	public class MessageTests extends Sprite
 	{
@@ -40,9 +41,11 @@ package com.distriqt.test.message
 		[Embed("/image.png")]
 		public var Image:Class;
 		
-		public static const TAG : String = "";
+		public static const TAG:String = "";
 		
-		private var _l : ILogger;
+		private var _l:ILogger;
+		
+		
 		private function log( log:String ):void
 		{
 			_l.log( TAG, log );
@@ -67,27 +70,27 @@ package com.distriqt.test.message
 				{
 					log( "Message.version =     " + Message.service.version );
 					
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, 	message_errorHandler );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, 			message_composeHandler );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_COMPLETE, 	message_composeHandler );
-					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_CANCELLED,	message_composeHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_ATTACHMENT_ERROR, message_errorHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE, message_composeHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_COMPLETE, message_composeHandler );
+					Message.service.addEventListener( MessageEvent.MESSAGE_MAIL_COMPOSE_CANCELLED, message_composeHandler );
 					
-					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 	message_smsEventHandler );
-					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 	message_smsEventHandler );
-					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler );
-					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler );
-					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 	message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, message_smsEventHandler );
+					Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, message_smsEventHandler );
 					
-					Message.service.addEventListener( ShareEvent.COMPLETE,	message_shareHandler );
-					Message.service.addEventListener( ShareEvent.CANCELLED,	message_shareHandler );
-					Message.service.addEventListener( ShareEvent.FAILED, 	message_shareHandler );
+					Message.service.addEventListener( ShareEvent.COMPLETE, message_shareHandler );
+					Message.service.addEventListener( ShareEvent.CANCELLED, message_shareHandler );
+					Message.service.addEventListener( ShareEvent.FAILED, message_shareHandler );
 					
 					
 					// Create some files for using as attachments
 					
-					textfileNativePath  = createAttachmentTextFile( "text.txt" ).nativePath;
+					textfileNativePath = createAttachmentTextFile( "text.txt" ).nativePath;
 					imagefileNativePath = createAttachmentImageFile( "image.jpg" ).nativePath;
-
+					
 					
 				}
 			}
@@ -103,14 +106,19 @@ package com.distriqt.test.message
 			if (Message.isMailSupported)
 			{
 				log( " === SENDING EMAIL === " );
-			
+				
 				Message.service.sendMail(
 						"Sending email from AIR",
 						"This is the content of the email\n\nSent using the distriqt Message ANE",
 						"email@address.com"
 				);
 			}
+			else
+			{
+				log( " MAIL NOT SUPPORTED " );
+			}
 		}
+		
 		
 		public function sendMailWithOptions():void
 		{
@@ -120,42 +128,46 @@ package com.distriqt.test.message
 				
 				var email:String = "ma@distriqt.com";
 				var subject:String = "Sending email from AIR";
-				
+
 //				var body:String = "<table>" +
 //					"<tr><td<strong>body</strong></td></tr>"+
 //					"<tr><td></td></tr>"+
 //					"<tr><td><img src='http://airnativeextensions.com/images/home/icon-support.png'/></td></tr>"+
 //					"<tr><td><a href='http://airnativeextensions.com'>airnativeextensions link</a></td></tr>" +
 //					"</table>";
-				
+
 //				var body:String = "This email was sent using the distriqt Message AIR native extension";
 				
-				var body:String = 
-					"<div>"+
-					"<p>This HTML email was sent using the distriqt <b>Message ANE</b></p>"+
-					"A link: <a href='http://airnativeextensions.com'>airnativeextensions.com</a>"+
-					"<br/>" +
-					"Block: <blockquote>Some quote</blockquote>"+
-					"<br/>" +
-					"Bold: <b>This text should be bold</b>"+
-					"<br/>" +
-					"Italic: <i>This text should be italic</i>"+
-					"<br/>" +
-					"Colour: <font color='#ff0000'>This text should be red</font>"+
-
-					"<div/>" ;
-					
+				var body:String =
+							"<div>" +
+							"<p>This HTML email was sent using the distriqt <b>Message ANE</b></p>" +
+							"A link: <a href='http://airnativeextensions.com'>airnativeextensions.com</a>" +
+							"<br/>" +
+							"Block: <blockquote>Some quote</blockquote>" +
+							"<br/>" +
+							"Bold: <b>This text should be bold</b>" +
+							"<br/>" +
+							"Italic: <i>This text should be italic</i>" +
+							"<br/>" +
+							"Colour: <font color='#ff0000'>This text should be red</font>" +
+						
+							"<div/>";
 				
-				Message.service.sendMailWithOptions( 
-					subject, 
-					body, 
-					email, 
-					"test@test.cc.com",
-					"",
-					[ new MessageAttachment( imagefileNativePath, "image/jpeg" ) ],
-					true
+				
+				Message.service.sendMailWithOptions(
+						subject,
+						body,
+						email,
+						"test@test.cc.com",
+						"",
+						[ new MessageAttachment( imagefileNativePath, "image/jpeg" ) ],
+						true
 				);
-			}			
+			}
+			else
+			{
+				log( " MAIL NOT SUPPORTED " );
+			}
 		}
 		
 		
@@ -198,8 +210,8 @@ package com.distriqt.test.message
 		{
 			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
-			stream.open(file, FileMode.WRITE);
-			stream.writeUTFBytes("some-custom-data");
+			stream.open( file, FileMode.WRITE );
+			stream.writeUTFBytes( "some-custom-data" );
 			stream.close();
 			return file;
 		}
@@ -209,8 +221,8 @@ package com.distriqt.test.message
 		{
 			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
-			stream.open(file, FileMode.WRITE);
-			stream.writeUTFBytes("This is the attachment");
+			stream.open( file, FileMode.WRITE );
+			stream.writeUTFBytes( "This is the attachment" );
 			stream.close();
 			
 			return file;
@@ -219,22 +231,19 @@ package com.distriqt.test.message
 		
 		private function createAttachmentImageFile( filename:String ):File
 		{
-			var bd:BitmapData = new BitmapData( 100, 100, false, 0x222222 ); 
+			var bd:BitmapData = new BitmapData( 100, 100, false, 0x222222 );
 			
-			var jpg:JPGEncoder = new JPGEncoder(50);
+			var jpg:JPGEncoder = new JPGEncoder( 50 );
 			var ba:ByteArray = jpg.encode( bd );
 			
 			var file:File = File.applicationStorageDirectory.resolvePath( filename );
 			var stream:FileStream = new FileStream();
-			stream.open(file, FileMode.WRITE);
-			stream.writeBytes(ba);
+			stream.open( file, FileMode.WRITE );
+			stream.writeBytes( ba );
 			stream.close();
 			
 			return file;
 		}
-		
-		
-		
 		
 		
 		////////////////////////////////////////////////////////
@@ -248,6 +257,7 @@ package com.distriqt.test.message
 				log( "authorisationStatus = " + Message.service.smsManager.authorisationStatus() );
 			}
 		}
+		
 		
 		public function checkAuthorisation():void
 		{
@@ -283,30 +293,27 @@ package com.distriqt.test.message
 		}
 		
 		
-		
-		
-		
-		
 		//
 		//
 		//	EXTENSION HANDLERS
 		//
 		//		
 		
-		private function message_errorHandler( event:MessageEvent ):void 
+		private function message_errorHandler( event:MessageEvent ):void
 		{
-			log( event.type +"::"+ event.details );
+			log( event.type + "::" + event.details );
 		}
 		
-		private function message_composeHandler( event:MessageEvent ):void 
+		
+		private function message_composeHandler( event:MessageEvent ):void
 		{
-			log( event.type +"::"+ event.details );
+			log( event.type + "::" + event.details );
 		}
 		
 		
 		private function message_smsEventHandler( event:MessageSMSEvent ):void
 		{
-			log( event.type +"::"+ event.details + "::"+event.sms.toString() );
+			log( event.type + "::" + event.details + "::" + event.sms.toString() );
 		}
 		
 		
@@ -317,4 +324,5 @@ package com.distriqt.test.message
 		
 		
 	}
+	
 }
