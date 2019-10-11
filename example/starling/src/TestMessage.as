@@ -15,8 +15,13 @@ package
 {
 	import com.distriqt.test.message.Main;
 	
+	import feathers.utils.ScreenDensityScaleFactorManager;
+	
+	import flash.desktop.NativeApplication;
+	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
+	import flash.display.StageDisplayState;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
@@ -39,7 +44,9 @@ package
 		//
 		
 		private var _starling:Starling;
+		private var _scaler:ScreenDensityScaleFactorManager;
 		
+		private var _debugView:Sprite;
 		
 		////////////////////////////////////////////////////////
 		//	FUNCTIONALITY
@@ -52,10 +59,18 @@ package
 		public function TestMessage()
 		{
 			super();
-			stage.align 	= StageAlign.TOP_LEFT;
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			
+			if(this.stage)
+			{
+				stage.align        = StageAlign.TOP_LEFT;
+				stage.scaleMode    = StageScaleMode.NO_SCALE;
+				stage.displayState = StageDisplayState.NORMAL;
+			}
+			this.mouseEnabled = this.mouseChildren = false;
 			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
+			
+			_debugView = new Sprite();
+			addChild( _debugView );
+			
 		}
 		
 		
@@ -73,45 +88,32 @@ package
 		
 		private function loaderInfo_completeHandler(event:Event):void
 		{
-			Starling.handleLostContext = true;
 			Starling.multitouchEnabled = true;
+//			_starling = new Starling( Main, this.stage, null, null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE );
+			_starling = new Starling( Main, this.stage );
+//			_starling.enableErrorChecking = false;
+//			_starling.skipUnchangedFrames = false;
+//			_starling.supportHighResolutions = false;
+			_starling.supportHighResolutions = true;
+			_starling.start();
 			
-			this._starling = new Starling( Main, this.stage );
-			this._starling.enableErrorChecking = false;
-			this._starling.start();
+			_scaler = new ScreenDensityScaleFactorManager(_starling);
 			
-			this.stage.addEventListener(Event.RESIZE, stage_resizeHandler, false, int.MAX_VALUE, true);
-			this.stage.addEventListener(Event.DEACTIVATE, deactivateHandler, false, 0, true);
+			stage.addEventListener(Event.DEACTIVATE, stage_deactivateHandler, false, 0, true);
 		}
 		
 		
-		private function stage_resizeHandler( event:Event ):void
+		private function stage_deactivateHandler(event:Event):void
 		{
-			this._starling.stage.stageWidth = this.stage.stageWidth;
-			this._starling.stage.stageHeight = this.stage.stageHeight;
-			
-			const viewPort:Rectangle = this._starling.viewPort;
-			viewPort.width  = this.stage.stageWidth;
-			viewPort.height = this.stage.stageHeight;
-			try
-			{
-				this._starling.viewPort = viewPort;
-			}
-			catch(error:Error) {}
+			_starling.stop(true);
+			stage.addEventListener(Event.ACTIVATE, stage_activateHandler, false, 0, true);
 		}
 		
 		
-		private function activateHandler( event:Event ):void
+		private function stage_activateHandler(event:Event):void
 		{
-			removeEventListener( Event.ACTIVATE, activateHandler );
-			this._starling.start();
-		}
-		
-		
-		private function deactivateHandler( event:Event ):void
-		{
-			addEventListener( Event.ACTIVATE, activateHandler, false, 0, true );
-			this._starling.stop();
+			stage.removeEventListener(Event.ACTIVATE, stage_activateHandler);
+			_starling.start();
 		}
 		
 		

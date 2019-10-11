@@ -22,6 +22,7 @@ package com.distriqt.test.message
 	import com.distriqt.extension.message.events.MessageSMSEvent;
 	import com.distriqt.extension.message.events.ShareEvent;
 	import com.distriqt.extension.message.objects.SMS;
+	import com.distriqt.extension.message.objects.SubscriptionInfo;
 	
 	import flash.display.BitmapData;
 	import flash.filesystem.File;
@@ -186,6 +187,30 @@ package com.distriqt.test.message
 		}
 		
 		
+		public function sendSMSViaSubscription():void
+		{
+			if (Message.service.smsManager.isSMSSupported)
+			{
+				var subs:Array = Message.service.smsManager.getSubscriptions();
+				log( " === SUBSCRIPTIONS === " );
+				for each (var sub:SubscriptionInfo in subs)
+				{
+					log( "SUB: ["+sub.id+"] " + sub.displayName + "/"+sub.carrierName);
+				}
+				
+				log( " === SENDING SMS === " );
+				
+				var sms:SMS = new SMS();
+				sms.address = "0444444444";
+				sms.message = "Testing Message ANE";
+				
+				var subscriptionId:int = subs.length > 0 ? subs[0].id : -1;
+				
+				Message.service.smsManager.sendSMS( sms, subscriptionId );
+			}
+		}
+		
+		
 		public function sendSMSWithUI():void
 		{
 			if (Message.service.smsManager.isSMSSupported)
@@ -263,7 +288,6 @@ package com.distriqt.test.message
 		{
 			if (Message.isSupported)
 			{
-				
 				switch (Message.service.smsManager.authorisationStatus())
 				{
 					case AuthorisationStatus.SHOULD_EXPLAIN:
@@ -282,7 +306,6 @@ package com.distriqt.test.message
 						// AUTHORISED: Camera will be available
 						break;
 				}
-				
 			}
 		}
 		

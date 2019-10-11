@@ -54,7 +54,9 @@ The following should be added to your `extensions` node in your application desc
 
 
 
-## Android: Manifest Additions
+## Android
+
+### Manifest Additions
 
 The Message ANE requires a few additions to the manifest to be able to start certain activities and to get permission to send and receive SMS. 
 You will need to replace any occurrences of `APPLICATION_ID` with your application package name (generally your application id prefixed by `air.`)
@@ -65,11 +67,7 @@ You should add the listing below to your manifest:
 <manifest android:installLocation="auto">
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-	
-	<uses-permission android:name="android.permission.SEND_SMS" /> 
-	<uses-permission android:name="android.permission.READ_SMS" /> 
-	<uses-permission android:name="android.permission.RECEIVE_SMS" />
-	
+
 	<application>
 
 		<provider
@@ -82,13 +80,6 @@ You should add the listing below to your manifest:
 				android:resource="@xml/distriqt_message_paths" />
 		</provider>
 
-	
-		<!-- TO RECEIVE SMS -->
-		<receiver android:name="com.distriqt.extension.message.receivers.MessageSMSReceiver" android:exported="true" > 
-			<intent-filter android:priority="1000"> 
-				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
-			</intent-filter> 
-		</receiver>
 
 		<!-- PERMISSIONS -->
 		<activity android:name="com.distriqt.extension.message.permissions.AuthorisationActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" />

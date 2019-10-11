@@ -14,6 +14,8 @@
 package com.distriqt.test.message
 {
 	import feathers.controls.ScrollContainer;
+	import feathers.layout.HorizontalAlign;
+	import feathers.layout.VerticalAlign;
 	
 	import flash.system.Capabilities;
 	
@@ -25,9 +27,8 @@ package com.distriqt.test.message
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.text.TextField;
+	import starling.text.TextFormat;
 	import starling.utils.Color;
-	import starling.utils.HAlign;
-	import starling.utils.VAlign;
 	
 	/**	
 	 * 
@@ -49,6 +50,7 @@ package com.distriqt.test.message
 		//	UI
 		
 		private var _buttons	: Vector.<Button>;
+		private var _container	: ScrollContainer;
 		private var _text		: TextField;
 		
 		
@@ -82,42 +84,27 @@ package com.distriqt.test.message
 		
 		private function init():void
 		{
-		
-		}
-		
-		
-		////////////////////////////////////////////////////////
-		//	EVENT HANDLERS
-		//
-		
-		protected function addedToStageHandler(event:Event):void
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler );
+			var marginTop:Number = 0;
 			
-			var theme:MetalWorksMobileTheme = new MetalWorksMobileTheme();
-			
-			Config.scale = 2 * Capabilities.screenDPI / theme.originalDPI;
-			
-			_text = new TextField( stage.stageWidth, stage.stageHeight, "", "_typewriter", 18, Color.WHITE );
-			_text.hAlign = HAlign.LEFT;
-			_text.vAlign = VAlign.TOP;
-			_text.y = 40;
+			var tf:TextFormat = new TextFormat( "_typewriter", 12, Color.WHITE, HorizontalAlign.LEFT, VerticalAlign.TOP );
+			_text = new TextField( stage.stageWidth, stage.stageHeight, "", tf );
+			_text.y = marginTop;
 			_text.touchable = false;
 			
 			var layout:VerticalLayout = new VerticalLayout();
-			layout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_RIGHT;
-			layout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_BOTTOM;
+			layout.horizontalAlign = HorizontalAlign.RIGHT;
+			layout.verticalAlign = VerticalAlign.BOTTOM;
 			layout.gap = 5;
-			var container:ScrollContainer = new ScrollContainer();
-			container.layout = layout;
-			container.width = stage.stageWidth;
-			container.height = stage.stageHeight-50;
+			
+			_container = new ScrollContainer();
+			_container.y = marginTop;
+			_container.layout = layout;
+			_container.width = stage.stageWidth;
+			_container.height = stage.stageHeight-_container.y;
+			
 			
 			_tests = new MessageTests( this );
 			addChild( _tests );
-			
-			_buttons = new Vector.<Button>();
-			
 			
 			addAction( "Send Mail", _tests.sendMail );
 			addAction( "Send Mail With Options", _tests.sendMailWithOptions );
@@ -125,18 +112,12 @@ package com.distriqt.test.message
 			addAction( "Status :SMS", _tests.authorisationStatus );
 			addAction( "Check :SMS", _tests.checkAuthorisation );
 			addAction( "Send SMS :SMS", _tests.sendSMS );
+			addAction( "Send SMS Via Sub :SMS", _tests.sendSMSViaSubscription );
 			addAction( "Send SMS With UI :SMS", _tests.sendSMSWithUI );
 			
 			
-			
-			
 			addChild( _text );
-			for each (var button:Button in _buttons)
-			{
-				container.addChild(button);
-			}
-			addChild( container );
-			
+			addChild( _container );
 			
 		}
 		
@@ -146,7 +127,20 @@ package com.distriqt.test.message
 			var b:Button = new Button();
 			b.label = label;
 			b.addEventListener( starling.events.Event.TRIGGERED, listener );
-			_buttons.push( b );
+			_container.addChild( b );
+		}
+		
+		
+		
+		////////////////////////////////////////////////////////
+		//	EVENT HANDLERS
+		//
+		
+		protected function addedToStageHandler(event:Event):void
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler );
+			var theme:MetalWorksMobileTheme = new MetalWorksMobileTheme();
+			init();
 		}
 		
 		

@@ -1,5 +1,12 @@
 
 
+###### 2019.10.11 [v6.1.010]
+
+```
+Android: Added ability to select SIM card for SMS (resolves #53)
+```
+
+
 ###### 2019.08.15 [v6.0.002]
 
 ```

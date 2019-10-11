@@ -27,10 +27,42 @@ private function smsEventHandler( event:MessageSMSEvent ):void
 
 
 
-## Sending an SMS directly
+## Android Advanced SMS operations
 
 On Android you can request permission to directly send and receive SMS messages without 
 user interaction. 
+
+
+### Manifest Additions
+
+The Message ANE requires a few additions to the manifest to be able to start certain activities and to get permission to send and receive SMS. 
+
+```xml
+<manifest android:installLocation="auto">
+	
+	<uses-permission android:name="android.permission.SEND_SMS" /> 
+	<uses-permission android:name="android.permission.READ_SMS" /> 
+	<uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+	<!-- To access SIM subscriptions -->
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+
+	<application>
+
+		<!-- TO RECEIVE SMS -->
+		<receiver android:name="com.distriqt.extension.message.receivers.MessageSMSReceiver" android:exported="true" > 
+			<intent-filter android:priority="1000"> 
+				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
+			</intent-filter> 
+		</receiver>
+
+	</application>
+
+</manifest>
+```
+	
+
 
 
 ### Requesting Authorisation
@@ -94,21 +126,48 @@ if (Message.service.smsManager.isSMSSupported)
 ```
 
 
+### Subscription Info
+
+In some devices there are multiple SIM cards and you may wish to specify the subscription to use to send the SMS.
+
+Firstly you must add the additional permission to `READ_PHONE_STATE` to be able to access the subscription information.
+
+
+Then call `getSubscriptions()` to retrieve an array of `SubscriptionInfo` objects representing the different sims.
+
+```as3
+var subs:Array = Message.service.smsManager.getSubscriptions();
+for each (var sub:SubscriptionInfo in subs)
+{
+	trace( "SIM: ["+sub.id+"] " + sub.displayName + "/"+sub.carrierName);
+}
+```
+
+When sending an SMS you can specify the subscription id to use to send the SMS:
+
+```as3
+Message.service.smsManager.sendSMS( sms, sub.id );
+```
+
+>
+> Note: This is only supported on Android API v22+. If it is not supported (or if you haven't requested the additional permission) `getSubscriptions()` will return an empty array and the default sim will be used to send messages.
+>
+
+
 ### Events
 
 You can listen for several events, as defined in the `MessageSMSEvent` class, see the documentation
 in that class for more information on the events.
 
 ```as3
-Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 	message_smsEventHandler );
-Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 	message_smsEventHandler );
-Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		message_smsEventHandler );
-Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			message_smsEventHandler );
-Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 	message_smsEventHandler );
-```
+Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_CANCELLED, 	smsEventHandler );
+Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_DELIVERED, 	smsEventHandler );
+Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_RECEIVED, 		smsEventHandler );
+Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT, 			smsEventHandler );
+Message.service.smsManager.addEventListener( MessageSMSEvent.MESSAGE_SMS_SENT_ERROR, 	smsEventHandler );
 
-```as3
-private function message_smsEventHandler( event:MessageSMSEvent ):void
+
+function smsEventHandler( event:MessageSMSEvent ):void
 {
 	trace( event.type +"::"+ event.details + "::"+event.sms.toString() );
 }
