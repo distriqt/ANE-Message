@@ -172,6 +172,58 @@ package com.distriqt.test.message
 		}
 		
 		
+		public function sendMailWithOptionsWithoutChooser():void
+		{
+			if (Message.isMailSupported)
+			{
+				log( " === SENDING EMAIL === " );
+				
+				var email:String = "ma@distriqt.com";
+				var subject:String = "Sending email from AIR";
+
+//				var body:String = "<table>" +
+//					"<tr><td<strong>body</strong></td></tr>"+
+//					"<tr><td></td></tr>"+
+//					"<tr><td><img src='http://airnativeextensions.com/images/home/icon-support.png'/></td></tr>"+
+//					"<tr><td><a href='http://airnativeextensions.com'>airnativeextensions link</a></td></tr>" +
+//					"</table>";
+
+//				var body:String = "This email was sent using the distriqt Message AIR native extension";
+				
+				var body:String =
+							"<div>" +
+							"<p>This HTML email was sent using the distriqt <b>Message ANE</b></p>" +
+							"A link: <a href='http://airnativeextensions.com'>airnativeextensions.com</a>" +
+							"<br/>" +
+							"Block: <blockquote>Some quote</blockquote>" +
+							"<br/>" +
+							"Bold: <b>This text should be bold</b>" +
+							"<br/>" +
+							"Italic: <i>This text should be italic</i>" +
+							"<br/>" +
+							"Colour: <font color='#ff0000'>This text should be red</font>" +
+						
+							"<div/>";
+				
+				
+				Message.service.sendMailWithOptions(
+						subject,
+						body,
+						email,
+						"test@test.cc.com",
+						"",
+						[ new MessageAttachment( imagefileNativePath, "image/jpeg" ) ],
+						true,
+						false
+				);
+			}
+			else
+			{
+				log( " MAIL NOT SUPPORTED " );
+			}
+		}
+		
+		
 		public function sendSMS():void
 		{
 			if (Message.service.smsManager.isSMSSupported)

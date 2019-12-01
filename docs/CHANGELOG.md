@@ -1,5 +1,12 @@
 
 
+###### 2019.12.01 [v6.1.012]
+
+```
+Android: Added ability to disable automatic chooser when sending email (resolves #54)
+```
+
+
 ###### 2019.10.11 [v6.1.010]
 
 ```

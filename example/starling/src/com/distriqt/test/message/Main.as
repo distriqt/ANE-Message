@@ -108,6 +108,7 @@ package com.distriqt.test.message
 			
 			addAction( "Send Mail", _tests.sendMail );
 			addAction( "Send Mail With Options", _tests.sendMailWithOptions );
+			addAction( "Send Mail With Options (no chooser)", _tests.sendMailWithOptionsWithoutChooser );
 			
 			addAction( "Status :SMS", _tests.authorisationStatus );
 			addAction( "Check :SMS", _tests.checkAuthorisation );
