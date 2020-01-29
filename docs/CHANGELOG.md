@@ -1,5 +1,12 @@
 
 
+###### 2020.01.29 [v6.1.018]
+
+```
+Added subscription id to received SMS (resolves #55)
+```
+
+
 ###### 2019.12.01 [v6.1.012]
 
 ```
