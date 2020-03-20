@@ -2,13 +2,20 @@
 ## Add the Extension
 
 First step is always to add the extension to your development environment. 
-To do this use the tutorial located [here](https://airnativeextensions.com/knowledgebase/tutorial/1).
+To do this use the tutorial located [here](https://airnativeextensions.github.io/tutorials/getting-started).
 
 
 
-## Required ANEs
+## Dependencies
 
-### Core ANE
+Many of our extensions use some common libraries, for example, the Android Support libraries.
+
+We have to separate these libraries into separate extensions in order to avoid multiple versions of the libraries being included in your application and causing packaging conflicts. This means that you need to include some additional extensions in your application along with the main extension file.
+
+You will add these extensions as you do with any other extension, and you need to ensure it is packaged with your application.
+
+
+### Core 
 
 The Core ANE is required by this ANE. You must include and package this extension in your application.
 
@@ -18,24 +25,26 @@ It also includes some centralised code for some common actions that can cause is
 You can access this extension here: [https://github.com/distriqt/ANE-Core](https://github.com/distriqt/ANE-Core).
 
 
+### Android Support
 
-### Android Support ANE
+The Android Support libraries encompass the Android Support, Android X and common Google libraries. 
 
-Due to several of our ANE's using the Android Support library the library has been separated into a separate ANE allowing you to avoid conflicts and duplicate definitions. This means that you need to include the some of the android support native extensions in your application along with this extension.
+These libraries are specific to Android. There are no issues including these on all platforms, they are just **required** for Android.
 
-You will add these extensions as you do with any other ANE, and you need to ensure it is packaged with your application. There is no problems including this on all platforms, they are just **required** on Android.
+This extension requires the following extensions:
 
-This ANE requires the following Android Support extensions:
-
-- [com.distriqt.androidsupport.V4.ane](https://github.com/distriqt/ANE-AndroidSupport/raw/master/lib/com.distriqt.androidsupport.V4.ane)
+- [androidx.core.ane](https://github.com/distriqt/ANE-AndroidSupport/raw/master/lib/androidx.core.ane)
 
 You can access these extensions here: [https://github.com/distriqt/ANE-AndroidSupport](https://github.com/distriqt/ANE-AndroidSupport).
 
 
-> 
-> Note: if you have been using the older `com.distriqt.AndroidSupport.ane` you should remove that ANE 
-> and replace it with the equivalent `com.distriqt.androidsupport.V4.ane`. This is the new version of 
-> this ANE and has been renamed to better identify the ANE with regards to its contents.
+>
+> **Note**: if you have been using the older `com.distriqt.androidsupport.*` (Android Support) extensions you should remove these extensions and replace it with the `androidx` extensions listed above. This is the new version of the android support libraries and moving forward all our extensions will require AndroidX.
+>
+
+>
+> **Note:** The Google Play Services and Android Support ANEs are only **required** on Android devices. 
+> There are no issues packaging these extensions with all platforms as there are default implementations available which will allow your code to package without errors however if you are only building an iOS application feel free to remove the Google Play Services and Android Support ANEs from your application.
 >
 
 
@@ -47,7 +56,7 @@ The following should be added to your `extensions` node in your application desc
 <extensions>
     <extensionID>com.distriqt.Message</extensionID>
     <extensionID>com.distriqt.Core</extensionID>
-    <extensionID>com.distriqt.androidsupport.V4</extensionID>
+    <extensionID>androidx.core</extensionID>
 </extensions>
 ```
 
@@ -59,7 +68,7 @@ The following should be added to your `extensions` node in your application desc
 ### Manifest Additions
 
 The Message ANE requires a few additions to the manifest to be able to start certain activities and to get permission to send and receive SMS. 
-You will need to replace any occurrences of `APPLICATION_ID` with your application package name (generally your application id prefixed by `air.`)
+You will need to replace any occurrences of `YOUR_APPLICATION_PACKAGE` with your application package name (generally your application id prefixed by `air.`)
 
 You should add the listing below to your manifest:
 
@@ -72,7 +81,7 @@ You should add the listing below to your manifest:
 
 		<provider
 			android:name="com.distriqt.extension.message.content.MessageFileProvider"
-			android:authorities="APPLICATION_ID.messagefileprovider"
+			android:authorities="YOUR_APPLICATION_PACKAGE.messagefileprovider"
 			android:grantUriPermissions="true"
 			android:exported="false">
 			<meta-data
