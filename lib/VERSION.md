@@ -1,1 +1,1 @@
-| com.distriqt.Message | 7.0.022 |
+| com.distriqt.Message | 7.0.023 |

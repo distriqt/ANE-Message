@@ -1,5 +1,12 @@
 
 
+###### 2020.04.05 [v7.0.024]
+
+```
+iOS: Updated symbol names to avoid conflict with Share ANE (resolves #57)
+```
+
+
 ###### 2020.03.20 [v7.0.023]
 
 ```
